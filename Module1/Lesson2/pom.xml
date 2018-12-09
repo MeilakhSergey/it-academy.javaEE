@@ -46,4 +46,39 @@
         </profile>
     </profiles>
 
+    <build>
+        <finalName>define</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <executions>
+                    <execution>
+                        <id>deploy</id>
+                        <goals>
+                            <goal>deploy-only</goal>
+                        </goals>
+                        <phase>package</phase>
+                        <configuration>
+                            <url>http://localhost:8080/manager/text</url>
+                            <server>myserver</server>
+                            <path>/${project.build.finalName}</path>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.apache.tomcat.maven/tomcat7-maven-plugin -->
+        <dependency>
+            <groupId>org.apache.tomcat.maven</groupId>
+            <artifactId>tomcat7-maven-plugin</artifactId>
+            <version>2.2</version>
+        </dependency>
+
+    </dependencies>
+
 </project>
