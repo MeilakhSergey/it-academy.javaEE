@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class UserTestSession {                                  //Тестирование с использованием SessionFactory
 //    public static SessionFactoryUtil factory;                 //задание свойств SessionFactory в классе
-    public static SessionFactoryUtilTest factory;               //задание свойств SessionFactory в файле hibernate.cfg.xml
+    public static SessionFactoryUtilTest factory;               //задание свойств SessionFactory в файле 123hibernate.cfg.xml
     public static Session session;
 
     @AfterEach

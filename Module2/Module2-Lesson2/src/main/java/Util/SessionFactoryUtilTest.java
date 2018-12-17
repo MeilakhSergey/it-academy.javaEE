@@ -10,7 +10,7 @@ public class SessionFactoryUtilTest {
     private static final SessionFactory sessionFactory;
     static {
         sessionFactory = new Configuration()
-                .configure()
+                .configure("META-INF/hibernate.cfg.xml")
                 .buildSessionFactory();
         /*Configuration configuration = new Configuration().configure();
         StandardServiceRegistryBuilder serviceRegistryBuilder = new StandardServiceRegistryBuilder();
