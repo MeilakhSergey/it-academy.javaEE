@@ -1,11 +1,8 @@
 import Entities.User;
 import Util.HibernateUtil;
-import Util.HibernateUtilTest;
 import org.hibernate.FlushMode;
-import org.hibernate.LazyInitializationException;
 import org.hibernate.Session;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -61,20 +58,24 @@ public class UserTest {
         em = HibernateUtil.getEntityManager();
         User user = new User("login1", "password1", "name1", "familyName1", "111");
         em.getTransaction().begin();
+        Session session = em.unwrap( Session.class);
+        session.setHibernateFlushMode( FlushMode.MANUAL );
         em.persist(user);
+        em.flush();
+
         user.setName("123123");
-//        em.flush();
         em.getTransaction().commit();
+
         em.clear();
 
         em.getTransaction().begin();
         User userFind = em.find(User.class, "login1");
         em.getTransaction().commit();
-        assertEquals(userFind.getName(), user.getName());
+        assertNotEquals(userFind.getName(), user.getName());
     }
 
     @Test
-    public void testFlushWithoutTransaction() {
+    public void testFlushManual() {
         em = HibernateUtil.getEntityManager();
         em.getTransaction().begin();
         User user = new User("login1", "password1", "name1", "familyName1", "111");
@@ -82,12 +83,13 @@ public class UserTest {
         user.setName("123123");
         Session session = em.unwrap( Session.class);
         session.setHibernateFlushMode( FlushMode.MANUAL );
-        em.flush();
-//        em.clear();
-
+//        em.flush();
+        em.clear();
+        em.getTransaction().commit();
+        em.getTransaction().begin();
         User userFind = em.find(User.class, "login1");
         em.getTransaction().commit();
-        assertEquals(userFind.getName(), user.getName());
+        assertNull(userFind);
     }
 
     @AfterAll

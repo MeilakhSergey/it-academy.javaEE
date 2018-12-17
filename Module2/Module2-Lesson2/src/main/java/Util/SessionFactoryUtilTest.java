@@ -9,14 +9,14 @@ import org.hibernate.service.ServiceRegistry;
 public class SessionFactoryUtilTest {
     private static final SessionFactory sessionFactory;
     static {
-        /*sessionFactory = new Configuration()
+        sessionFactory = new Configuration()
                 .configure()
-                .buildSessionFactory();*/
-        Configuration configuration = new Configuration().configure(HibernateUtil.class.getResource("/hibernate.cfg.xml"));
+                .buildSessionFactory();
+        /*Configuration configuration = new Configuration().configure();
         StandardServiceRegistryBuilder serviceRegistryBuilder = new StandardServiceRegistryBuilder();
         serviceRegistryBuilder.applySettings(configuration.getProperties());
         ServiceRegistry serviceRegistry = serviceRegistryBuilder.build();
-        sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+        sessionFactory = configuration.buildSessionFactory(serviceRegistry);*/
     }
 
     public static Session getSession() {

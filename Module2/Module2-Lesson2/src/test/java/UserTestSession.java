@@ -1,28 +1,21 @@
 import Entities.User;
-import Util.HibernateUtil;
-import Util.HibernateUtilTest;
-import Util.SessionFactoryUtil;
 import Util.SessionFactoryUtilTest;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityNotFoundException;
+import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class UserTestSession {
+public class UserTestSession {                                  //Тестирование с использованием SessionFactory
+//    public static SessionFactoryUtil factory;                 //задание свойств SessionFactory в классе
+    public static SessionFactoryUtilTest factory;               //задание свойств SessionFactory в файле hibernate.cfg.xml
     public static Session session;
 
-    @BeforeEach
+    @AfterEach
     public void init() {
-        session = SessionFactoryUtil.getSession();
+        session = factory.getSession();
 
         session.getTransaction().begin();
         session.createQuery("DELETE FROM User u").executeUpdate();
@@ -32,7 +25,7 @@ public class UserTestSession {
 
     @Test
     public void testAddFind() {
-        session = SessionFactoryUtil.getSession();
+        session = factory.getSession();
 
         User user = new User("login1", "password1", "name1", "familyName1", "111");
         session.getTransaction().begin();
@@ -48,7 +41,7 @@ public class UserTestSession {
 
     @Test
     public void testFindAndLoad() {
-        session = SessionFactoryUtil.getSession();
+        session = factory.getSession();
 
         session.getTransaction().begin();
         User userFind = session.get(User.class, "login1");
@@ -63,6 +56,6 @@ public class UserTestSession {
 
     @AfterAll
     public static void close() {
-        HibernateUtil.close();
+        factory.closeSessionFactory();
     }
 }
