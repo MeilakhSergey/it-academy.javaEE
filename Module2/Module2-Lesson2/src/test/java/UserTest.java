@@ -92,6 +92,22 @@ public class UserTest {
         assertNull(userFind);
     }
 
+    @Test
+    public void testRefresh() {
+        em = HibernateUtil.getEntityManager();
+        User user = new User("login1", "password1", "name1", "familyName1", "111");
+        em.getTransaction().begin();
+        em.persist(user);
+        em.getTransaction().commit();
+        em.clear();
+
+        user = em.find(User.class, "login1");
+        user.setName("123123123");
+        em.refresh(user);
+
+        assertEquals("name1", user.getName());
+    }
+
     @AfterAll
     public static void close() {
         HibernateUtil.close();
