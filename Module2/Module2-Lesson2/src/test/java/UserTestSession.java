@@ -56,6 +56,24 @@ public class UserTestSession {                                  //Тестиро
         assertThrows(ObjectNotFoundException.class, () -> userLoad.getName());
     }
 
+    /*@Test
+    public void testFlushWithoutTransaction() {
+        session = factory.getSession();
+
+        User user = new User("login1", "password1", "name1", "familyName1", "111");
+        session.getTransaction().begin();
+        session.save(user);
+        session.getTransaction().commit();
+        session.clear();
+
+        user = session.get(User.class, "login1");
+        System.out.println(user);
+        user.setName("12312312");
+        System.out.println(user);
+        session.flush();
+        System.out.println(user);
+    }*/
+
     @AfterAll
     public static void close() {
         factory.closeSessionFactory();
