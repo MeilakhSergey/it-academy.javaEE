@@ -5,17 +5,22 @@
 <hibernate-configuration>
 
     <session-factory>
-        <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <!--<property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
         <property name="connection.url">jdbc:mysql://localhost:3306/Module2Test?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC</property>
+        --><property name="connection.driver_class">org.h2.Driver</property>
+        <property name="connection.url">jdbc:h2:mem:inMemmoryTest</property>
+
+
         <property name="connection.username">root</property>
         <property name="connection.password">root</property>
-        <!--<property name="hibernate.dialect.storage_engine">innodb</property>-->
+        <!--<property name="hibernate.dialect.storage_engine">innodb</property>--> <!--не помню зачем-->
         <property name="hibernate.hbm2ddl.auto">create</property><!--create-drop не работает-->
         <property name="hibernate.use_sql_comments">true</property>
         <property name="hibernate.show_sql">true</property>
         <property name="connection.pool_size">10</property>
         <property name="hibernate.current_session_context_class">thread</property>
-        <property name="dialect">org.hibernate.dialect.MySQL8Dialect</property>
+        <!--<property name="dialect">org.hibernate.dialect.MySQL8Dialect</property>-->
+        <property name="dialect">org.hibernate.dialect.H2Dialect</property>
 
         <mapping class="Entities.User"/>
     </session-factory>

@@ -21,6 +21,7 @@ public class UserTest {
         em.createQuery("DELETE FROM User u").executeUpdate();
         em.getTransaction().commit();
         em.clear();
+        em.close();
     }
 
     @Test
@@ -36,6 +37,8 @@ public class UserTest {
         User userFind = em.find(User.class, "login1");
         em.getTransaction().commit();
         assertEquals(userFind, user);
+
+        em.close();
     }
 
     @Test
@@ -51,6 +54,8 @@ public class UserTest {
         User userLoad = em.getReference(User.class, "login1");
         em.getTransaction().commit();
         assertThrows(EntityNotFoundException.class, () -> userLoad.getName());
+
+        em.close();
     }
 
     @Test
@@ -72,6 +77,8 @@ public class UserTest {
         User userFind = em.find(User.class, "login1");
         em.getTransaction().commit();
         assertNotEquals(userFind.getName(), user.getName());
+
+        em.close();
     }
 
     @Test
@@ -90,6 +97,8 @@ public class UserTest {
         User userFind = em.find(User.class, "login1");
         em.getTransaction().commit();
         assertNull(userFind);
+
+        em.close();
     }
 
     @Test
@@ -106,6 +115,8 @@ public class UserTest {
         em.refresh(user);
 
         assertEquals("name1", user.getName());
+
+        em.close();
     }
 
     @AfterAll

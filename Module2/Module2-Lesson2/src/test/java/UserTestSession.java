@@ -39,6 +39,8 @@ public class UserTestSession {                                  //Тестиро
         User userFind = session.get(User.class, "login1");
         session.getTransaction().commit();
         assertEquals(userFind, user);
+
+        session.close();
     }
 
     @Test
@@ -54,6 +56,8 @@ public class UserTestSession {                                  //Тестиро
         User userLoad = session.load(User.class, "login1");
         session.getTransaction().commit();
         assertThrows(ObjectNotFoundException.class, () -> userLoad.getName());
+
+        session.close();
     }
 
     /*@Test
