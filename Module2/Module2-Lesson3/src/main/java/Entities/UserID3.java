@@ -1,22 +1,22 @@
 package Entities;
 
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 
-@EqualsAndHashCode
-@ToString
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 
 @Entity
-public class UserNamingStrategy {
+public class UserID3 {
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "gen")
+    @GenericGenerator(name = "gen", strategy = "increment")
     private Long id;
     @NaturalId
     private String login;

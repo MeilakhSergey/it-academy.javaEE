@@ -7,6 +7,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Table;
+import javax.persistence.metamodel.EntityType;
+import javax.persistence.metamodel.Metamodel;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -30,6 +33,11 @@ public class UserNamingStrategyTest {
         em.persist(user);
         em.getTransaction().commit();
         em.clear();
+
+        User userFind = new User(Long.valueOf(1), "login1", "password1", "name1+getter", "familyName1+getter", null);
+        user = em.unwrap(Session.class).byNaturalId(User.class).using(User_.LOGIN, "login1").load();
+
+        assertEquals(userFind, user);
 
         em.close();
     }

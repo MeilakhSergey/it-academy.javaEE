@@ -5,6 +5,11 @@
     <persistence-unit name="Module2-Lesson2" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <class>Entities.User</class>
+        <class>Entities.UserID1</class>
+        <class>Entities.UserID2</class>
+        <class>Entities.UserID3</class>
+        <class>Entities.UserID4</class>
+        <class>Entities.UserID5</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
@@ -22,6 +27,11 @@
     <persistence-unit name="test" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <class>Entities.User</class>
+        <class>Entities.UserID1</class>
+        <class>Entities.UserID2</class>
+        <class>Entities.UserID3</class>
+        <class>Entities.UserID4</class>
+        <class>Entities.UserID5</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
