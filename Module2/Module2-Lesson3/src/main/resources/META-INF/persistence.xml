@@ -16,6 +16,7 @@
             <property name="hibernate.use_sql_comments" value="true"/>
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.connection.pool_size" value="10"/>
+            <property name="hibernate.physical_naming_strategy" value="Util.CustomNamingStrategy"/>
         </properties>
     </persistence-unit>
     <persistence-unit name="test" transaction-type="RESOURCE_LOCAL">

@@ -33,12 +33,17 @@ public class UserTest {
         em.getTransaction().commit();
         em.clear();
 
+        //user.setName(user.getName()+"+getter");
+        //user.setFamilyName(user.getFamilyName()+"+getter");
+        User userFind = new User(Long.valueOf(1), "login1", "password1", "name1+getter", "familyName1+getter", null);
         em.getTransaction().begin();
         //User userFind = em.find(User.class, "login1");
-        User userFind = em.unwrap(Session.class).byNaturalId(User.class).using(User_.LOGIN, "login1").load();
+        user = em.unwrap(Session.class).byNaturalId(User.class).using(User_.LOGIN, "login1").load();
         //User userFind = em.unwrap(Session.class).bySimpleNaturalId(User.class).load("login1");
         em.getTransaction().commit();
         assertEquals(userFind, user);
+
+        em.close();
     }
 
     @Test
