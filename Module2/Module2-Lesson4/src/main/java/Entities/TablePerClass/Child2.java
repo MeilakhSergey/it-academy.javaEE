@@ -12,7 +12,7 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 @AllArgsConstructor
 
-@Entity(name = "TablePerSubclass2_Child2")
+@Entity(name = "TablePerClass_Child2")
 @DiscriminatorValue("Child2")
 public class Child2 extends Item {
     @Column

@@ -31,6 +31,7 @@ public class TablePerClassTest {
         Child1 child11 = new Child1(null, "ItemName1", "ItemNameColumn1", "childName1", "ChildFamilyName1", "childPhone1");
         Child2 child2 = new Child2(null, "ItemName2", "ItemNameColumn2", "childName2", "ChildFamilyName2", "childPhone2");
         Item item = new Item(null, "Item1", "Item2");
+
         em.getTransaction().begin();
         em.persist(child1);
         em.persist(child11);
@@ -43,6 +44,8 @@ public class TablePerClassTest {
         assertEquals(itemFind, child1);
         System.out.println(itemFind);
 
+        Item itemDB = em.find(Item.class, item.getId());
+        assertEquals(itemDB, item);
 
         em.close();
     }

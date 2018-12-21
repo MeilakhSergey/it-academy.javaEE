@@ -10,7 +10,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 
-@Entity(name = "TablePerSublass2_Item")
+@Entity(name = "TablePerClass_Item")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @DiscriminatorColumn(name = "ITEM_TYPE")
 @DiscriminatorValue("Item")
