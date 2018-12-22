@@ -119,6 +119,34 @@ public class UserTest {
         em.close();
     }
 
+    @Test
+    public void test123() {
+        em = HibernateUtil.getEntityManager();
+        User user = new User("login1", "password1", "name1", "familyName1", "111");
+        em.getTransaction().begin();
+        em.persist(user);
+        user.setName("Before Commit");
+        em.getTransaction().commit();
+        em.clear();
+
+        user.setName("1231231213");
+        em.getTransaction().begin();
+        em.merge(user);
+        user.setName("a");
+        em.getTransaction().commit();
+        em.clear();
+
+
+        em.getTransaction().begin();
+        User userFind = em.find(User.class, "login1");
+        em.getTransaction().commit();
+        assertEquals(userFind, user);
+
+        em.close();
+    }
+
+
+
     @AfterAll
     public static void close() {
         HibernateUtil.close();
