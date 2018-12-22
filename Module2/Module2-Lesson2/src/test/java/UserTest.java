@@ -133,6 +133,7 @@ public class UserTest {
         em.getTransaction().begin();
         em.merge(user);
         user.setName("a");
+        //em.merge(user);
         em.getTransaction().commit();
         em.clear();
 
