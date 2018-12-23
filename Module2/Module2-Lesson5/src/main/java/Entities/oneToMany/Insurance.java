@@ -1,9 +1,14 @@
-package Entities.oneToOne;
+package Entities.oneToMany;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -11,27 +16,19 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 
-@Entity(name = "OneToOne_Insurance")
+@Entity(name = "OneToMany_Insurance")
 public class Insurance {
     @Id
-    @GeneratedValue(generator = "oneToOne")
-    @GenericGenerator(name = "oneToOne", strategy = "foreign",
-                        parameters = @org.hibernate.annotations.Parameter(name = "property", value = "person"))
+    @GeneratedValue
     private Long id;
     @Column
     private String insuranceNumber;
     @Column
     private String organization;
 
-    @OneToOne/*(cascade = CascadeType.ALL)*//*(mappedBy = "insurance")*/
-    //@JoinColumn(name = "ID_person")
-    @PrimaryKeyJoinColumn
+    @ManyToOne
+    @JoinColumn(name = "ID_person")
     private PersonParent person;
-
-    /*public void setPerson(PersonParent person) {
-        this.person = person;
-        this.id = person.getId();
-    }*/
 
     @Override
     public boolean equals(Object o) {

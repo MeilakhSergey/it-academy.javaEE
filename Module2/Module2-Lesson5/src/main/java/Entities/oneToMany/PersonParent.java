@@ -1,26 +1,37 @@
-package Entities.oneToOne;
+package Entities.oneToMany;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 
-@Entity(name = "OneToOne_Person")
+@Entity(name = "OneToMany_Person")
 public class PersonParent {
     @Id
-    @GeneratedValue//(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
     @Column
     private String name;
     @Column
     private String phone;
 
-    @OneToOne(mappedBy = "person", cascade = CascadeType.ALL)
-    private Insurance insurance;
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
+    @Fetch(FetchMode.SELECT)
+    @BatchSize(size = 2)
+    private List<Insurance> insurance = new LinkedList<>();
 
     @Override
     public boolean equals(Object o) {
