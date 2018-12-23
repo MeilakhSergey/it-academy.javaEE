@@ -19,19 +19,19 @@ public class OneToOneTest {
         PersonParent personParent = new PersonParent(null, "name1", "phone1", null);
         Insurance insurance = new Insurance(null, "number1", "organization1", null);
 
-        personParent.setInsurance(insurance);
+        //personParent.setInsurance(insurance);
         insurance.setPerson(personParent);
 
         em.getTransaction().begin();
-        em.persist(personParent);
+        em.persist(insurance);
         em.getTransaction().commit();
         em.clear();
 
         PersonParent personParentFind = em.find(PersonParent.class, 1L);
-        assertEquals(personParentFind, insurance.getPerson());
+        assertEquals("number1", personParentFind.getInsurance().getInsuranceNumber());
 
-        Insurance insuranceFind = em.find(Insurance.class, 2L);
-        assertEquals(personParent, insuranceFind.getPerson());
+        Insurance insuranceFind = em.find(Insurance.class, 1L);
+        assertEquals("name1", insuranceFind.getPerson().getName());
 
         em.close();
     }

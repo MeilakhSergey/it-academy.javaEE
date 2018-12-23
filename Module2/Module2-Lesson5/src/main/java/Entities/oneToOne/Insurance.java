@@ -14,18 +14,18 @@ import java.util.Objects;
 @Entity
 public class Insurance {
     @Id
-    @GeneratedValue/*(generator = "oneToOne")
+    @GeneratedValue(generator = "oneToOne")
     @GenericGenerator(name = "oneToOne", strategy = "foreign",
-                        parameters = @org.hibernate.annotations.Parameter(name = "property", value = "person"))*/
+                        parameters = @org.hibernate.annotations.Parameter(name = "property", value = "person"))
     private Long id;
     @Column
     private String insuranceNumber;
     @Column
     private String organization;
 
-    @OneToOne(mappedBy = "insurance")
-    @JoinColumn(name = "ID_person")
-    //@PrimaryKeyJoinColumn
+    @OneToOne/*(cascade = CascadeType.ALL)*//*(mappedBy = "insurance")*/
+    //@JoinColumn(name = "ID_person")
+    @PrimaryKeyJoinColumn
     private PersonParent person;
 
     /*public void setPerson(PersonParent person) {

@@ -19,7 +19,7 @@ public class PersonParent {
     @Column
     private String phone;
 
-    @OneToOne(/*mappedBy = "person",*/ cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "person", cascade = CascadeType.ALL)
     private Insurance insurance;
 
     @Override
