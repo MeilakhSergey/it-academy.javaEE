@@ -8,6 +8,8 @@
         <class>Entities.oneToOne.PersonParent</class>
         <class>Entities.oneToMany.Insurance</class>
         <class>Entities.oneToMany.PersonParent</class>
+        <class>Entities.manyToMany.Insurance</class>
+        <class>Entities.manyToMany.PersonParent</class>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/Module2Test?createDatabaseIfNotExist=true&amp;useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC"/>

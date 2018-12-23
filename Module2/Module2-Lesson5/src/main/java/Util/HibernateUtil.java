@@ -7,8 +7,8 @@ import javax.persistence.Persistence;
 public class HibernateUtil {
     private static final EntityManagerFactory emFactory;
     static {
-        //emFactory = Persistence.createEntityManagerFactory("MySQL");          //использование MySQL
-        emFactory = Persistence.createEntityManagerFactory("test");                     //использование h2
+        emFactory = Persistence.createEntityManagerFactory("MySQL");          //использование MySQL
+        //emFactory = Persistence.createEntityManagerFactory("test");                     //использование h2
     }
 
     public static EntityManager getEntityManager() {
