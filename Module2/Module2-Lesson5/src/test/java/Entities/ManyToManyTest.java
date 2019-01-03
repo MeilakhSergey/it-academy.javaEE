@@ -70,6 +70,41 @@ public class ManyToManyTest {
         assertEquals("name1", insuranceFind2.getPerson().get(0).getName());
     }
 
+    @Test
+    void testDeleteBond() {
+        em = HibernateUtil.getEntityManager();
+
+        PersonParent personParent1 = new PersonParent(null, "name1", "phone1", new LinkedList<>());
+        Insurance insurance1 = new Insurance(null, "number1", "organization2", new LinkedList<>());
+
+        personParent1.getInsurance().add(insurance1);
+        insurance1.getPerson().add(personParent1);
+
+        em.getTransaction().begin();
+        em.persist(personParent1);
+        em.getTransaction().commit();
+        em.clear();
+
+        PersonParent personParentFind = em.find(PersonParent.class, 1L);
+        Insurance insuranceFind = em.find(Insurance.class, 2L);
+
+        personParentFind.setInsurance(new LinkedList<>());
+        insuranceFind.setPerson(new LinkedList<>());
+
+        em.getTransaction().begin();
+//        em.merge(personParent1);
+//        em.merge(personParent2);
+//        em.merge(personParent3);
+        em.merge(insuranceFind);
+//        em.merge(insurance2);
+//        em.merge(insurance3);
+        em.getTransaction().commit();
+        em.clear();
+
+        PersonParent personParentFind2 = em.find(PersonParent.class, 1L);
+        assertEquals(0, personParentFind2.getInsurance().size());
+    }
+
     @AfterAll
     public static void close() {
         HibernateUtil.close();
