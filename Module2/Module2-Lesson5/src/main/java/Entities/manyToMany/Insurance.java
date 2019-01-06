@@ -25,7 +25,7 @@ public class Insurance {
     @Column
     private String organization;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "People_insurance", joinColumns = @JoinColumn(name = "ID_insurance"),
                 inverseJoinColumns = @JoinColumn(name = "ID_person"))
     private List<PersonParent> person = new LinkedList<>();

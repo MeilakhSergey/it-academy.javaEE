@@ -28,8 +28,15 @@ public class PersonParent {
     @Column
     private String phone;
 
-    @ManyToMany(mappedBy = "person", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "person", cascade = CascadeType.PERSIST)
     private List<Insurance> insurance = new LinkedList<>();
+
+    @PreRemove
+    private void removingChilds() {
+        for (Insurance insurance2: insurance) {
+            insurance2.getPerson().remove(this);
+        }
+    }
 
     @Override
     public boolean equals(Object o) {
