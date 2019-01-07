@@ -3,10 +3,13 @@ import entities.Person;
 import entities.PersonAll;
 import entities.PersonDirty;
 import entities.PersonVersion;
+import org.hibernate.Session;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import javax.persistence.*;
+
+import java.sql.Connection;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -40,10 +43,18 @@ public class LockTest {
         Person person = em.find(Person.class, 1L);
         person.setName("NewName");
 
+        em.lock(person, LockModeType.NONE);
+        Session session = em.unwrap(Session.class);
+        System.out.println("------------------------" + session.getCurrentLockMode(person));
+
+        int isolationLevel = session.doReturningWork(Connection::getTransactionIsolation);
+        System.out.println("---------------------" + isolationLevel);
+
         new Thread(() -> {
             EntityManager em2 = HibernateUtil.getEntityManager();
             em2.getTransaction().begin();
             Person person2 = em2.find(Person.class, 1L);
+            System.out.println("++++++++++" + person2.getName());
             assertNotEquals("NewName", person2.getName());                  //?????????
             person2.setName("NoName");
             em2.getTransaction().commit();
