@@ -4,12 +4,12 @@ import entities.PersonAll;
 import entities.PersonDirty;
 import entities.PersonVersion;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.persistence.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class LockTest {
@@ -34,7 +34,7 @@ public class LockTest {
     }
 
     @Test
-    void testNoLock() throws InterruptedException {
+    void testIsolationNoLock() throws InterruptedException {                //Checking isolation=2 in persistence.xml with Person.class
         EntityManager em = HibernateUtil.getEntityManager();
         em.getTransaction().begin();
         Person person = em.find(Person.class, 1L);
@@ -44,6 +44,7 @@ public class LockTest {
             EntityManager em2 = HibernateUtil.getEntityManager();
             em2.getTransaction().begin();
             Person person2 = em2.find(Person.class, 1L);
+            assertNotEquals("NewName", person2.getName());                  //?????????
             person2.setName("NoName");
             em2.getTransaction().commit();
             em2.clear();
@@ -61,7 +62,69 @@ public class LockTest {
     }
 
     @Test
-    void testLockOPTIMISTIC() throws InterruptedException {
+    void testIsolation() throws InterruptedException {                //Checking isolation=2 in persistence.xml with PersonVersion.class
+        EntityManager em = HibernateUtil.getEntityManager();
+        em.getTransaction().begin();
+        PersonVersion personVersion = em.find(PersonVersion.class, 1L);
+        String name = personVersion.getName();
+        System.out.println(name);
+        personVersion.setName("NewName");
+        long version = personVersion.getVersion();
+
+        new Thread(() -> {
+            EntityManager em2 = HibernateUtil.getEntityManager();
+            em2.getTransaction().begin();
+            PersonVersion personVersion2 = em2.find(PersonVersion.class, 1L);
+            assertNotEquals("NewName", personVersion2.getName());
+            personVersion2.setName("testLockVersion");
+            em2.getTransaction().commit();
+            em2.clear();
+            em2.close();
+        }).start();
+        Thread.sleep(1000);
+
+        assertThrows(RollbackException.class, () -> em.getTransaction().commit());
+        em.getTransaction().rollback();
+//        em.getTransaction().commit();
+        em.clear();
+
+        PersonVersion personVersionFind = em.find(PersonVersion.class, 1L);
+
+        assertEquals(version + 1, personVersionFind.getVersion());
+        assertEquals("testLockVersion", personVersionFind.getName());
+
+        em.close();
+    }
+
+    @Test
+    void testNoLock() throws InterruptedException {                                     //No locking with Person.class
+        EntityManager em = HibernateUtil.getEntityManager();
+        em.getTransaction().begin();
+        Person person = em.find(Person.class, 1L);
+        person.setName("NewName3");
+
+        new Thread(() -> {
+            EntityManager em2 = HibernateUtil.getEntityManager();
+            em2.getTransaction().begin();
+            Person person2 = em2.find(Person.class, 1L);
+            person2.setName("NoName3");
+            em2.getTransaction().commit();
+            em2.clear();
+            em2.close();
+        }).start();
+        Thread.sleep(1000);
+
+        em.getTransaction().commit();
+        em.clear();
+
+        Person personNew = em.find(Person.class, 1L);
+        assertEquals("NewName3", personNew.getName());
+
+        em.close();
+    }
+
+    @Test
+    void testLockOPTIMISTIC() throws InterruptedException {                                     //OPTIMISTIC Locking with Person.class doesn't work
         EntityManager em = HibernateUtil.getEntityManager();
         em.getTransaction().begin();
         Person person = em.find(Person.class, 1L, LockModeType.OPTIMISTIC);
@@ -90,7 +153,7 @@ public class LockTest {
     }
 
     @Test
-    void testLockVersion() throws InterruptedException {
+    void testLockVersion() throws InterruptedException {                                            //Locking PersonVersion.class
         EntityManager em = HibernateUtil.getEntityManager();
         em.getTransaction().begin();
         PersonVersion personVersion = em.find(PersonVersion.class, 1L);
@@ -122,7 +185,7 @@ public class LockTest {
     }
 
     @Test
-    void testLockAll() throws InterruptedException {
+    void testLockAll() throws InterruptedException {                                            //Locking PersonAll.class
         EntityManager em = HibernateUtil.getEntityManager();
         em.getTransaction().begin();
         PersonAll personAll = em.find(PersonAll.class, 1L);
@@ -152,7 +215,7 @@ public class LockTest {
     }
 
     @Test
-    void testLockDirty() throws InterruptedException {
+    void testLockDirty() throws InterruptedException {                                            //Locking PersonDirty.class
         EntityManager em = HibernateUtil.getEntityManager();
         em.getTransaction().begin();
         PersonDirty personDirty = em.find(PersonDirty.class, 1L);
@@ -182,7 +245,7 @@ public class LockTest {
     }
 
     @Test
-    void testLockVersionOPTIMISTIC() throws InterruptedException {
+    void testLockVersionOPTIMISTIC() throws InterruptedException {                                            //Locking PersonVersion.class with OPTIMISTIC Lock (no difference)
         EntityManager em = HibernateUtil.getEntityManager();
         em.getTransaction().begin();
         PersonVersion personVersion = em.find(PersonVersion.class, 1L, LockModeType.OPTIMISTIC);
@@ -214,7 +277,7 @@ public class LockTest {
     }
 
     @Test
-    void testLockVersionForceOPTIMISTIC() throws InterruptedException {
+    void testLockVersionForceOPTIMISTIC() throws InterruptedException {                                            //Locking PersonVersion.class with FORCE_OPTIMISTIC find()
         EntityManager em = HibernateUtil.getEntityManager();
         em.getTransaction().begin();
         PersonVersion personVersion = em.find(PersonVersion.class, 1L, LockModeType.OPTIMISTIC);
@@ -245,7 +308,7 @@ public class LockTest {
     }
 
     @Test
-    void testLockVersionForceOPTIMISTIClock() throws InterruptedException {
+    void testLockVersionForceOPTIMISTIClock() throws InterruptedException {                                            //Locking PersonVersion.class with FORCE_OPTIMISTIC lock()
         EntityManager em = HibernateUtil.getEntityManager();
         em.getTransaction().begin();
         PersonVersion personVersion = em.find(PersonVersion.class, 1L, LockModeType.OPTIMISTIC);
@@ -277,7 +340,7 @@ public class LockTest {
     }
 
     @Test
-    void testLockVersionPESSIMISTIC() throws InterruptedException {
+    void testLockVersionPESSIMISTIC() throws InterruptedException {                                            //Locking PersonVersion.class with PESSIMISTIC
         EntityManager em = HibernateUtil.getEntityManager();
         em.getTransaction().begin();
         PersonVersion personVersion = em.find(PersonVersion.class, 1L, LockModeType.PESSIMISTIC_WRITE);
@@ -287,10 +350,12 @@ public class LockTest {
         new Thread(() -> {
             EntityManager em2 = HibernateUtil.getEntityManager();
             em2.getTransaction().begin();
-            PersonVersion personVersion2 = em2.find(PersonVersion.class, 1L);
+            PersonVersion personVersion2 = em2.find(PersonVersion.class, 1L);//, LockModeType.PESSIMISTIC_WRITE);           //????????
             personVersion2.setName("testLockVersionPESSIMISTIC");
+
             assertThrows(RollbackException.class, () -> em2.getTransaction().commit());
             em2.getTransaction().rollback();
+//            em2.getTransaction().commit();
             em2.close();
         }).start();
         Thread.sleep(1000);
@@ -390,6 +455,7 @@ public class LockTest {
             em2.getTransaction().begin();
             Query query2 = em2.createQuery("FROM PersonVersion pv WHERE pv.id=1");
             PersonVersion personVersion2 = (PersonVersion) query2.getSingleResult();
+
             assertThrows(OptimisticLockException.class, () -> em2.lock(personVersion2, LockModeType.PESSIMISTIC_WRITE));
             em2.getTransaction().rollback();
             em2.close();
