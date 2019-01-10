@@ -37,11 +37,12 @@ public class LockTest {
     }
 
     @Test
-    void testIsolationNoLock() throws InterruptedException {                //Checking isolation=2 in persistence.xml with Person.class
+    void testIsolationNoLock() throws InterruptedException {                //Checking isolation=1 in persistence.xml with Person.class
         EntityManager em = HibernateUtil.getEntityManager();
         em.getTransaction().begin();
         Person person = em.find(Person.class, 1L);
         person.setName("NewName");
+        em.flush();
 
         em.lock(person, LockModeType.NONE);
         Session session = em.unwrap(Session.class);
@@ -73,7 +74,7 @@ public class LockTest {
     }
 
     @Test
-    void testIsolation() throws InterruptedException {                //Checking isolation=2 in persistence.xml with PersonVersion.class
+    void testIsolation() throws InterruptedException {                //Checking isolation=1 in persistence.xml with PersonVersion.class
         EntityManager em = HibernateUtil.getEntityManager();
         em.getTransaction().begin();
         PersonVersion personVersion = em.find(PersonVersion.class, 1L);
