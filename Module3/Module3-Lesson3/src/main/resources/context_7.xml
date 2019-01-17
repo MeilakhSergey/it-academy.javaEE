@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:annotation-config/>
+
+    <bean id="person" class="_7annAutowiredCustomQualifier.Person" p:name="NAME_7"/>
+    <bean id="doing2" class="_7annAutowiredCustomQualifier.PersonPrint">
+        <qualifier type="_7annAutowiredCustomQualifier.DoSmth">
+            <attribute key="amount" value="one"/>
+        </qualifier>
+    </bean>
+    <bean id="doing" class="_7annAutowiredCustomQualifier.PersonPrint222">
+        <qualifier type="_7annAutowiredCustomQualifier.DoSmth">
+            <attribute key="amount" value="two"/>
+        </qualifier>
+    </bean>
+
+</beans>
