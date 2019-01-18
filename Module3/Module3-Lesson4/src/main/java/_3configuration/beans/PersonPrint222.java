@@ -2,7 +2,9 @@ package _3configuration.beans;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Component;
 
+@Component
 //@Primary
 @Qualifier("twoStrings")
 public class PersonPrint222 implements Doing {

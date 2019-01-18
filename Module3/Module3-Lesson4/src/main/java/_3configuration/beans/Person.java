@@ -6,17 +6,19 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 @Data
 @NoArgsConstructor @AllArgsConstructor
 
+@Component
 public class Person {
 
     @Value("NAME_3")
     private String name;
 
     @Autowired(required = false)
-//    @Qualifier("oneString")
+    @Qualifier("oneString")
 //    @Value("#{personPrint222}")
     private Doing doing;
 

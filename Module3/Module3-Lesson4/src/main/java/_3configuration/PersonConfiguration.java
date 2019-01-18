@@ -22,7 +22,7 @@ public class PersonConfiguration {
 
     @Bean(value = "personPrint")
 //    @Qualifier("oneString")
-    @Primary
+//    @Primary
     public PersonPrint personPrint() {
         return new PersonPrint();
     }
