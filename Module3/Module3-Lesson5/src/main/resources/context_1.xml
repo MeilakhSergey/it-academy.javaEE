@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <context:component-scan base-package="xmlConfiguration"/>
+
+    <aop:config proxy-target-class="true">
+        <aop:pointcut id="all" expression="execution(* xmlConfiguration.beans.*.*(..))"/>
+        <aop:pointcut id="division" expression="execution(* xmlConfiguration.beans.Person.division(..))"/>
+
+        <aop:aspect id="beforeAfterMethods" ref="aspect123">
+            <aop:before method="before" pointcut-ref="all"/>
+            <aop:after-returning method="afterReturn" pointcut-ref="division" returning="refValue"/>
+            <aop:after-throwing method="mistake" pointcut-ref="division"/>
+            <aop:after method="after" pointcut-ref="division"/>
+
+            <aop:around method="around" pointcut="args(str)"/>
+        </aop:aspect>
+
+    </aop:config>
+
+</beans>
