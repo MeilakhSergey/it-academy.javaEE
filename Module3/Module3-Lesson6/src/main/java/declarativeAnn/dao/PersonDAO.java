@@ -14,7 +14,7 @@ import java.sql.SQLException;
 @Repository
 @Transactional
 public class PersonDAO implements DAO<Person> {
-    @PersistenceContext
+    @PersistenceContext//(unitName = "jpa-unitH2")
     @Getter
     private EntityManager em;
 

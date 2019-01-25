@@ -35,7 +35,7 @@
 
     <bean id="entityManagerFactoryH2" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSourceH2"/>
-        <property name="persistenceUnitName" value="jpa-unit"/>
+        <property name="persistenceUnitName" value="jpa-unitH2"/>
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
         </property>
@@ -56,7 +56,7 @@
     </bean>
     <!--<bean id="entityManagerFactoryMySQL" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">-->
         <!--<property name="dataSource" ref="dataSourceMySQL"/>-->
-        <!--<property name="persistenceUnitName" value="jpa-unit"/>-->
+        <!--<property name="persistenceUnitName" value="jpa-unitMySQL"/>-->
         <!--<property name="jpaVendorAdapter">-->
             <!--<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>-->
         <!--</property>-->
