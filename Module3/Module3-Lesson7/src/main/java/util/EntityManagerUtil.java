@@ -8,7 +8,7 @@ import javax.persistence.PersistenceContext;
 
 @Component
 public class EntityManagerUtil {
-    @PersistenceContext
+    @PersistenceContext(unitName = "jpa-unit")
     @Getter
     private EntityManager em;
 
